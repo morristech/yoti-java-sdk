@@ -1,17 +1,23 @@
 # Spring Boot Yoti SDK Example
 
-This project shows an example implementation of a server-app with an endpoint which will be called by Yoti with a `token`.
-You will need to pass this token to Yoti-SDK in order to retrieve the profile of a user which has been logged in by Yoti.
+This example project shows two ways of completing a share with Yoti.  One initiates a share using a static scenario defined in [Yoti Dashboard](https://www.yoti.com/dashboard/applications), the other creates a dynamic scenario on the fly.  Both examples finish by using the Java SDK to retrieve the shared user profile, based on a token returned from Yoti as queryParam.
 
-Before you start, you'll need to create an Application in [Dashboard](https://www.yoti.com/dashboard) and verify the domain.
+Before you start, you'll need to create an Application in [Yoti Dashboard](https://www.yoti.com/dashboard/applications) and verify the domain.
 
-**NOTE: While creating Application in Dashboard, some of the attributes (except phone number and selfie) require users to have a Yoti with a verified passport. If your application, for instance, requires the user's date of birth and she/he has not added their passport to their Yoti account, this will lead to a failed login.**
+**NOTE: Some attributes (except phone number and selfie) may only be retrieved from users who have verified them against a document, such as a passport.  So for instance, if your application requires the user's date of birth but their date of birth has not been verified against a document, this will lead to a failed login.**
+
+## Creating your example Yoti Application
+1. In the [Yoti Dashboard](https://www.yoti.com/dashboard/applications) set the application domain of your app to `https://localhost:8443/`. Note that your endpoint must be accessible from the machine that is displaying the QR code.
+1. If you want to try out a static scenario, create one in dashboard and set the scenario callback URL to `/login`.  Note the _Scenario ID_ 
+1. Use _Actions > Activate_ to make your application live
+1. From the _KEYS_ tab, note your _Application ID_ and _Yoti client SDK ID_
+1. Hit _Generate Key Pair_ to get a .pem file for your app and save it to your hard drive
+
 
 ## Project Structure
-* The logic for retrieving the profile can be found in `com.yoti.api.examples.springboot.YotiLoginController#doLogin`.
 * `resources/app-keypair.pem` is the keypair you can get from Dashboard.
 * `resource/application.yml` contains the configuration that enforces SSL usage by your server-app (in case you are not using a proxy server like NGINX). Make sure that you update the SDK Application ID and the configuration points to the right path to the java keystore with an SSL key (there is an already one included in the project ``` server.keystore.jks ```).
-* This project contains a Spring-boot server application. In this example we used the current SDK version by including the specific Maven dependency with its repository:
+* The current SDK version is referenced in the pom by including:
 ```xml
     <dependency>
       <groupId>com.yoti</groupId>
@@ -20,23 +26,26 @@ Before you start, you'll need to create an Application in [Dashboard](https://ww
     </dependency>
 ```
 
-## Building your example server-app
-1. In the [Yoti Dashboard](https://www.yoti.com/dashboard/applications) set the application domain of your app to `https://localhost:8443/`. Note that your endpoint must be accessible from the machine that is displaying the QR code.
-1. Still in the dashboard, set the scenario callback URL to `/login`. 
-1. Edit the [resources/application.yml](src/main/resources/application.yml) and replace the `yoti-client-sdk-id-from-dashboard` value with the `Yoti client SDK ID` you can find in Dashboard.
-1. Download your Application's key pair from Yoti-Dashboard and copy it to `resources/app-keypair.pem`.
-1. Run `mvn clean package` to build the project.
+### Configuring the Spring Boot App
+You only need to edit the [resources/application.yml](src/main/resources/application.yml) file
+1. Provide the _applicationId_ and _clientSdkId_ you noted earlier
+1. Copy your .pem key file to `src/main/resources`, and enter the _filename_ against the _accessSecurityKey_
+1. If you want to try out a static scenario, provide the _Scenario ID_ you noted earlier.  You do not need this for a dynamic scenario. 
+
+### Code
+* The logic for initiating a share based on a static scenario is in `com.yoti.api.examples.springboot.YotiStaticScenarioController`
+* The logic for initiating a share based on a dynamic scenario is in `com.yoti.api.examples.springboot.YotiDynamicScenarioController`
+* The logic for retrieving the profile can be found in `com.yoti.api.examples.springboot.YotiLoginController`.
+
 
 ## Running
+* Build your server-app with `mvn clean package`
 * You can run your server-app by executing `java -jar target/yoti-sdk-spring-boot-example-2.2.0.jar`
   * If you are using Java 9, you can run the server-app as follows `java -jar target/yoti-sdk-spring-boot-example-2.2.0.jar --add-exports java.base/jdk.internal.ref=ALL-UNNAMED`
-* Navigate to `https://localhost:8443`
+* To initiate a share using a static scenario, navigate to `https://localhost:8443`
+* To initiate a share using a dynamic scenario, navigate to `https://localhost:8443/dynamic-qr-code`
 * You can then initiate a login using Yoti.  The Spring demo is listening for the response on `https://localhost:8443/login`.
 
-In order to receive calls on your /login endpoint, you need to expose your server-app to the outside world. We require that you use the domain from the Callback URL and HTTPS.
-
-## Requirements for running the application
+### Requirements for running the application
 * Java 7 or above
 * If you are using Oracle JDK/JRE you need to install JCE extension in your server's Java to allow strong encryption (http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html). This is not a requirement if you are using OpenJDK.
-
-

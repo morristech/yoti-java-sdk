@@ -6,7 +6,8 @@ server:
         key-store-password: javaexample
 com:
     yoti:
+        scenarioId: "yoti-scenario-id-from-dashboard"
         client:
             applicationId: "yoti-application-id-from-dashboard"
             clientSdkId: "yoti-client-sdk-id-from-dashboard"
-            accessSecurityKey: "classpath:/app-keypair.pem"
+            accessSecurityKey: "classpath:/key-file-from-dashboard.pem"

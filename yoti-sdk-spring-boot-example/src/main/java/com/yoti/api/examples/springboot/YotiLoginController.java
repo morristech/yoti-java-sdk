@@ -38,7 +38,6 @@ public class YotiLoginController extends WebMvcConfigurerAdapter {
     private static final Logger LOG = LoggerFactory.getLogger(YotiLoginController.class);
 
     private final YotiClient client;
-    private final YotiClientProperties properties;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -46,15 +45,8 @@ public class YotiLoginController extends WebMvcConfigurerAdapter {
     }
 
     @Autowired
-    public YotiLoginController(final YotiClient client, YotiClientProperties properties) {
+    public YotiLoginController(final YotiClient client) {
         this.client = client;
-        this.properties = properties;
-    }
-
-    @RequestMapping("/")
-    public String home(final Model model) {
-        model.addAttribute("applicationId", properties.getApplicationId());
-        return "index";
     }
 
     /**
@@ -135,7 +127,7 @@ public class YotiLoginController extends WebMvcConfigurerAdapter {
     }
 
     private DisplayAttribute handleAgeVerification(Attribute attribute) {
-        return new DisplayAttribute("Age Verification/", "Age verified", attribute, "yoti-icon-verified");
+        return new DisplayAttribute("(" + attribute.getName() + ")", "Age verified", attribute, "yoti-icon-verified");
     }
 
     private DisplayAttribute handleProfileAttribute(Attribute attribute) {
