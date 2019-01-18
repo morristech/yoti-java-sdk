@@ -43,7 +43,7 @@ public class YotiDynamicScenarioController extends WebMvcConfigurerAdapter {
     /**
      * This endpoint displays the login page, based on a static scenario. It's a GET endpoint.
      */
-    @RequestMapping("/dynamic-qr-code")
+    @RequestMapping("/dynamic-scenario-demo")
     public String loginWithDynamicQrCode(final Model model) throws DynamicShareException {
         DynamicPolicy dynamicPolicy = DynamicPolicyBuilder.newInstance()
                 .withFullName()
@@ -69,7 +69,7 @@ public class YotiDynamicScenarioController extends WebMvcConfigurerAdapter {
         model.addAttribute("qrCodeUrl", shareUrlResult.getUrl());
         model.addAttribute("sdkId", yotiClientProperties.getClientSdkId());
         model.addAttribute("scenarioId", yotiProperties.getScenarioId()); // We shouldn't need this, but browser.js curently requires it
-        return "dynamicQrCode";
+        return "dynamicScenarioDemo";
     }
 
 }

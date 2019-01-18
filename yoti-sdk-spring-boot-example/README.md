@@ -42,8 +42,8 @@ You only need to edit the [resources/application.yml](src/main/resources/applica
 * Build your server-app with `mvn clean package`
 * You can run your server-app by executing `java -jar target/yoti-sdk-spring-boot-example-2.2.0.jar`
   * If you are using Java 9, you can run the server-app as follows `java -jar target/yoti-sdk-spring-boot-example-2.2.0.jar --add-exports java.base/jdk.internal.ref=ALL-UNNAMED`
-* To initiate a share using a static scenario, navigate to `https://localhost:8443`
-* To initiate a share using a dynamic scenario, navigate to `https://localhost:8443/dynamic-qr-code`
+* To initiate a share using a static scenario, navigate to `https://localhost:8443/static-scenario-demo`
+* To initiate a share using a dynamic scenario, navigate to `https://localhost:8443/dynamic-scenario-demo`
 * You can then initiate a login using Yoti.  The Spring demo is listening for the response on `https://localhost:8443/login`.
 
 ### Requirements for running the application

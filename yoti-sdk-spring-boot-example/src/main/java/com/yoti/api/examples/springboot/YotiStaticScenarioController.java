@@ -31,11 +31,11 @@ public class YotiStaticScenarioController extends WebMvcConfigurerAdapter {
     /**
      * This endpoint displays the login page, based on a static scenario. It's a GET endpoint.
      */
-    @RequestMapping("/")
+    @RequestMapping({ "/", "/static-scenario-demo"})
     public String loginWithStaticQrCode(final Model model) {
         model.addAttribute("applicationId", yotiClientProperties.getApplicationId());
         model.addAttribute("scenarioId", yotiProperties.getScenarioId());
-        return "index";
+        return "staticScenarioDemo";
     }
 
 }
