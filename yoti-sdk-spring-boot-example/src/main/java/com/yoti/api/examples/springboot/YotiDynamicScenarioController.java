@@ -31,13 +31,11 @@ public class YotiDynamicScenarioController extends WebMvcConfigurerAdapter {
 
     private final YotiClient client;
     private final YotiProperties yotiProperties;
-    private final YotiClientProperties yotiClientProperties;
 
     @Autowired
-    public YotiDynamicScenarioController(final YotiClient client, YotiProperties yotiProperties, YotiClientProperties yotiClientProperties) {
+    public YotiDynamicScenarioController(final YotiClient client, YotiProperties yotiProperties) {
         this.client = client;
         this.yotiProperties = yotiProperties;
-        this.yotiClientProperties = yotiClientProperties;
     }
 
     /**
@@ -67,7 +65,7 @@ public class YotiDynamicScenarioController extends WebMvcConfigurerAdapter {
         ShareUrlResult shareUrlResult = client.createShareUrl(dynamicScenario);
 
         model.addAttribute("qrCodeUrl", shareUrlResult.getUrl());
-        model.addAttribute("sdkId", yotiClientProperties.getClientSdkId());
+        model.addAttribute("appId", yotiProperties.getApplicationId());
         model.addAttribute("scenarioId", yotiProperties.getScenarioId()); // We shouldn't need this, but browser.js curently requires it
         return "dynamicScenarioDemo";
     }

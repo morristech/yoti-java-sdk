@@ -1,5 +1,5 @@
 server:
-    port: 8443
+    port: 8080
     ssl:
         enabled: true
         key-store: "server.keystore.jks"
@@ -7,7 +7,7 @@ server:
 com:
     yoti:
         scenarioId: "yoti-scenario-id-from-dashboard"
+        applicationId: "yoti-application-id-from-dashboard"
         client:
-            applicationId: "yoti-application-id-from-dashboard"
             clientSdkId: "yoti-client-sdk-id-from-dashboard"
             accessSecurityKey: "classpath:/key-file-from-dashboard.pem"
